@@ -1,0 +1,4 @@
+
+suite('angular-popbox', function() {
+
+});

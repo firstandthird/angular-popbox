@@ -1,0 +1,15 @@
+{
+  "name": "angular-popbox",
+  "description": "Angular directive for popbox plugin",
+  "version": "0.1.0",
+  "homepage": "",
+  "license": "MIT",
+  "copyright": "Greg Allen",
+  "main": "dist/angular-popbox.js",
+  "dependencies": {
+    "angular": "1.0.7"
+  },
+  "devDependencies": {
+    "assert": "*"
+  }
+}
