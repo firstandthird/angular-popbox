@@ -7,7 +7,8 @@
   "copyright": "Greg Allen",
   "main": "dist/angular-popbox.js",
   "dependencies": {
-    "angular": "1.0.7"
+    "angular": "1.0.7",
+    "popbox" : "0.4.2"
   },
   "devDependencies": {
     "assert": "*"

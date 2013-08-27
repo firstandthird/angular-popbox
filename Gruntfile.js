@@ -140,6 +140,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-plato');
   grunt.registerTask('scripts', ['jshint', 'bower', 'concat', 'uglify', 'clean:bower', 'mocha', 'bytesize']);
   grunt.registerTask('default', ['scripts']);
-  grunt.registerTask('dev', ['connect:server', 'watch']);
+  grunt.registerTask('dev', ['connect:server', 'scripts', 'watch']);
   grunt.registerTask('reports', ['plato', 'connect:plato']);
 };
