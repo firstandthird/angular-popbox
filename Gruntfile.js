@@ -22,7 +22,9 @@ module.exports = function(grunt) {
       main: {
         dest: 'dist/_bower.js',
         exclude: [
-          'assert'
+          'assert',
+          'jquery',
+          'angular'
         ]
       }
     },
