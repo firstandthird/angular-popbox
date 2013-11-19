@@ -1,8 +1,9 @@
+
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.1.0
- * 
- * copyright Greg Allen 2013
+ * v0.2.0
+ * https://github.com/firstandthird/angular-popbox
+ * copyright First + Third 2013
  * MIT License
 */
 /*!
@@ -194,11 +195,12 @@
   $.Fidel = window.Fidel;
 
 })(jQuery);
+
 /*!
- * popbox - Fidel Tooltip/Popover Library
- * v0.4.2
- * https://github.com/jgallen23/popbox
- * copyright Greg Allen 2013
+ * popbox - Tooltip/Popover Library
+ * v0.6.0
+ * https://github.com/firstandthird/popbox
+ * copyright First + Third 2013
  * MIT License
 */
 (function($) {
@@ -285,6 +287,7 @@
         this.template.fadeOut(this.hideFadeDuration, this.proxy(this.reset));
 
         this.open = false;
+        this.hoveringOverTooltip = false;
         this.el.trigger('hide');
       }), this.hideTimeout);
     },
@@ -399,28 +402,31 @@
   }
 })(jQuery);
 
-(function(){
-  angular.module('popbox',[])
-      .directive('popbox', [function(){
-        return {
-          restrict: 'A',
-          scope : {
-            popboxText : '='
-          },
-          link : function(scope, el, attrs){
-            var $el = $(el),
-                direction = attrs.popboxDirection || 'down',
-                updateElement = function(value){
-                  scope.popbox.text = value;
-                };
+angular.module('ftPopbox', [])
+  .directive('popbox', function($parse) {
+    return {
+      restrict: 'A',
+      link : function(scope, el, attrs){
+        var $el = $(el);
+        var cls;
+        var direction = attrs.popboxDirection || 'down';
 
-            $el.popbox({ direction : direction });
-            scope.popbox = $el.data('popbox');
-
-            scope.$watch('popboxText',function(newValue){
-              updateElement(newValue);
-            });
-          }
+        var updateElement = function(value) {
+          console.log(arguments);
+          cls.text = value;
+          cls.template = null;
         };
-      }]);
-})();
+
+        $el.popbox({
+          direction: direction
+        });
+        cls = $el.data('popbox');
+
+        attrs.$observe('popbox', function(newValue) {
+          updateElement(newValue);
+          console.log('update', arguments);
+        });
+
+      }
+    };
+  });
