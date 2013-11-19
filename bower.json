@@ -2,15 +2,25 @@
   "name": "angular-popbox",
   "description": "Angular directive for popbox plugin",
   "version": "0.1.1",
-  "homepage": "",
+  "homepage": "https://github.com/firstandthird/angular-popbox",
   "license": "MIT",
-  "copyright": "Greg Allen",
+  "copyright": "First + Third",
   "main": "dist/angular-popbox.js",
   "dependencies": {
-    "angular": "~1.0.7",
-    "popbox" : "~0.6.0"
+    "jquery": "~1.10.0",
+    "angular": "~1.0.7"
   },
   "devDependencies": {
-    "assert": "*"
-  }
+    "assert": "*",
+    "blanket": "*"
+  },
+  "ignore": [
+    "test",
+    "example",
+    "grunt",
+    "lib",
+    "Gruntfile.js",
+    "package.json",
+    "grunt"
+  ]
 }
