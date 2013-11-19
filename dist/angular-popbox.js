@@ -1,7 +1,7 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.2.0
+ * v0.2.1
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2013
  * MIT License
