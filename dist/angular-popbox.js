@@ -1,7 +1,7 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.2.1
+ * v0.2.2
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2013
  * MIT License
@@ -16,7 +16,6 @@ angular.module('ftPopbox', [])
         var direction = attrs.popboxDirection || 'down';
 
         var updateElement = function(value) {
-          console.log(arguments);
           cls.text = value;
           cls.template = null;
         };
@@ -28,7 +27,6 @@ angular.module('ftPopbox', [])
 
         attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
-          console.log('update', arguments);
         });
 
       }
