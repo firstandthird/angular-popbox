@@ -8,8 +8,8 @@
   "main": "dist/angular-popbox.js",
   "dependencies": {
     "jquery": "~1.10.0",
-    "angular": "~1.0.7",
-    "popbox": "~0.7.0"
+    "angular": "~1.2.0",
+    "popbox": "~0.8.0"
   },
   "devDependencies": {
     "assert": "*",
