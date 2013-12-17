@@ -1,7 +1,7 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.2.2
+ * v0.3.0
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2013
  * MIT License
@@ -198,7 +198,7 @@
 
 /*!
  * popbox - Tooltip/Popover Library
- * v0.7.0
+ * v0.8.1
  * https://github.com/firstandthird/popbox
  * copyright First + Third 2013
  * MIT License
@@ -208,6 +208,7 @@
     defaults: {
       containerClass: 'popbox',
       direction: 'down',
+      directionClasses: 'left left-edge up right right-edge down left-up right-up',
       directionOffset: 10,
       hideFadeDuration: 100,
       showFadeDuration: 50,
@@ -236,14 +237,13 @@
 
     attachEvents: function () {
       if(this.enableHover) {
-        this.el.bind('mouseenter', this.proxy(this.show));
-        this.el.bind('mouseleave', this.proxy(this.hide));
+        this.el.bind('mouseenter.popbox', this.proxy(this.show));
+        this.el.bind('mouseleave.popbox', this.proxy(this.hide));
       }
     },
 
     reset: function () {
-      this.template.unbind('mouseenter');
-      this.template.unbind('mouseleave');
+      this.template.unbind('.popbox');
       this.template.remove();
     },
 
@@ -261,8 +261,8 @@
       if(!this.open) {
         $('body').append(this.generateTemplate());
 
-        this.template.bind('mouseenter', this.proxy(this.hoverTooltip));
-        this.template.bind('mouseleave', this.proxy(this.hoverLeaveTooltip));
+        this.template.bind('mouseenter.popbox', this.proxy(this.hoverTooltip));
+        this.template.bind('mouseleave.popbox', this.proxy(this.hoverLeaveTooltip));
 
         this.template.hide().fadeIn(this.showFadeDuration);
         this.position();
@@ -309,52 +309,59 @@
         position: 'absolute'
       });
 
+      this.template.removeClass(this.directionClasses);
+
       var elOffset = this.el.offset();
+      var left, top;
+      var right = 'auto';
 
       switch(this.direction) {
         case 'left':
-          this.template.css({
-            left: elOffset.left - this.template.outerWidth() - this.directionOffset,
-            top: (elOffset.top + this.el.outerHeight() / 2) - (this.template.outerHeight() / 2)
-          });
+          left = elOffset.left - this.template.outerWidth() - this.directionOffset;
+          top = (elOffset.top + this.el.outerHeight() / 2) - (this.template.outerHeight() / 2);
           this.template.addClass('left');
           break;
         case 'up':
-          this.template.css({
-            left: (elOffset.left + this.el.outerWidth() / 2) - (this.template.outerWidth() / 2),
-            top: elOffset.top  - this.template.outerHeight() - this.directionOffset
-          });
+          left = (elOffset.left + this.el.outerWidth() / 2) - (this.template.outerWidth() / 2);
+          top = elOffset.top  - this.template.outerHeight() - this.directionOffset;
           this.template.addClass('up');
           break;
         case 'right':
-          this.template.css({
-            left: elOffset.left + this.el.outerWidth() + this.directionOffset,
-            top: (elOffset.top + this.el.outerHeight() / 2) - (this.template.outerHeight() / 2)
-          });
+          left = elOffset.left + this.el.outerWidth() + this.directionOffset;
+          top = (elOffset.top + this.el.outerHeight() / 2) - (this.template.outerHeight() / 2);
           this.template.addClass('right');
           break;
         case 'down':
-          this.template.css({
-            left: (elOffset.left + this.el.outerWidth() / 2) - (this.template.outerWidth() / 2),
-            top: elOffset.top  + this.el.outerHeight() + this.directionOffset
-          });
+          left = (elOffset.left + this.el.outerWidth() / 2) - (this.template.outerWidth() / 2);
+          top = elOffset.top  + this.el.outerHeight() + this.directionOffset;
           this.template.addClass('down');
           break;
         case 'left-up':
-          this.template.css({
-            left: (elOffset.left) - (this.template.outerWidth() / 2),
-            top: elOffset.top  - this.template.outerHeight() - this.directionOffset
-          });
+          left = (elOffset.left) - (this.template.outerWidth() / 2);
+          top = elOffset.top  - this.template.outerHeight() - this.directionOffset;
           this.template.addClass('left-up');
           break;
         case 'right-up':
-          this.template.css({
-            left: (elOffset.left + this.el.outerWidth()) - (this.template.outerWidth() / 2),
-            top: elOffset.top  - this.template.outerHeight() - this.directionOffset
-          });
+          left = (elOffset.left + this.el.outerWidth()) - (this.template.outerWidth() / 2);
+          top = elOffset.top  - this.template.outerHeight() - this.directionOffset;
           this.template.addClass('right-up');
           break;
       }
+
+      if(($(window).width() - (left + this.template.outerWidth())) < 0) {
+        this.template.addClass('right-edge');
+        left = 'auto';
+        right = 0;
+      } else if(left < 0) {
+        this.template.addClass('left-edge');
+        left = 0;
+      }
+
+      this.template.css({
+        left: left,
+        right: right,
+        top: top
+      });
     },
 
     generateTemplate: function () {
@@ -393,7 +400,13 @@
 
     hoverLeaveTooltip: function () {
       this.hoveringOverTooltip = false;
-      this.el.trigger('mouseleave');
+      this.el.trigger('mouseleave.popbox');
+    },
+    destroy: function(){
+      this.reset();
+      this.el.unbind('.popbox');
+
+      Fidel.prototype.destroy.call(this);
     }
   });
 
@@ -421,10 +434,14 @@ angular.module('ftPopbox', [])
         });
         cls = $el.data('popbox');
 
-        attrs.$observe('popbox', function(newValue) {
+        var stopObserving = attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
         });
 
+        scope.$on('$destroy', function(){
+          stopObserving();
+          cls.destroy();
+        });
       }
     };
   });

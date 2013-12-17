@@ -1,7 +1,7 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.2.2
+ * v0.3.0
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2013
  * MIT License
@@ -25,10 +25,14 @@ angular.module('ftPopbox', [])
         });
         cls = $el.data('popbox');
 
-        attrs.$observe('popbox', function(newValue) {
+        var stopObserving = attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
         });
 
+        scope.$on('$destroy', function(){
+          stopObserving();
+          cls.destroy();
+        });
       }
     };
   });

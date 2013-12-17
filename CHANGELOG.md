@@ -1,3 +1,9 @@
+0.3.0 / 2013-12-17
+==================
+
+  * Merge pull request #4 from Belelros/master
+  * Adding cleaning up methods
+  * Updating dependencies versions
 
 0.2.2 / 2013-11-19 
 ==================
