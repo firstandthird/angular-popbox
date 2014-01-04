@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "assert": "*",
-    "blanket": "*"
+    "blanket": "*",
+    "angular-mocks": "*"
   },
   "ignore": [
     "test",

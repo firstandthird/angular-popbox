@@ -1,16 +1,16 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.3.1
+ * v0.3.0
  * https://github.com/firstandthird/angular-popbox
- * copyright First + Third 2013
+ * copyright First + Third 2014
  * MIT License
 */
 /*!
  * fidel - a ui view controller
- * v2.2.4
+ * v2.2.5
  * https://github.com/jgallen23/fidel
- * copyright Greg Allen 2013
+ * copyright Greg Allen 2014
  * MIT License
 */
 (function(w, $) {
@@ -37,8 +37,8 @@
   Fidel.prototype.setElement = function(el) {
     this.el = el;
     this.getElements();
-    this.delegateEvents();
     this.dataElements();
+    this.delegateEvents();
     this.delegateActions();
   };
 
@@ -436,13 +436,12 @@ angular.module('ftPopbox', [])
         });
         cls = $el.data('popbox');
 
-        var stopObserving = attrs.$observe('popbox', function(newValue) {
+        attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
         });
 
         var destroyDirective = function(){
           if (cls){
-            stopObserving();
             cls.destroy();
             cls = null;
           }
