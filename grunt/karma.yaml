@@ -1,0 +1,19 @@
+options:
+  browsers:
+    - 'PhantomJS'
+  runnerPort: 9876
+  reporters:
+    - 'dots'
+  frameworks:
+    - 'jasmine'
+unit:
+  options:
+    files:
+      - 'bower_components/jquery/jquery.js'
+      - 'bower_components/angular/angular.js'
+      - 'bower_components/angular-mocks/angular-mocks.js'
+      - 'bower_components/fidel/dist/fidel.js'
+      - 'bower_components/popbox/dist/popbox.js'
+      - 'lib/<%= name %>.js'
+      - 'test/**/*.js'
+    singleRun: true

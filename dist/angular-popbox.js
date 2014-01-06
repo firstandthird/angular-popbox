@@ -1,9 +1,9 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.3.1
+ * v0.3.0
  * https://github.com/firstandthird/angular-popbox
- * copyright First + Third 2013
+ * copyright First + Third 2014
  * MIT License
 */
 angular.module('ftPopbox', [])
@@ -25,13 +25,12 @@ angular.module('ftPopbox', [])
         });
         cls = $el.data('popbox');
 
-        var stopObserving = attrs.$observe('popbox', function(newValue) {
+        attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
         });
 
         var destroyDirective = function(){
           if (cls){
-            stopObserving();
             cls.destroy();
             cls = null;
           }
