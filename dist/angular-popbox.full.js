@@ -1,16 +1,16 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.3.0
+ * v0.3.2
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2014
  * MIT License
 */
 /*!
  * fidel - a ui view controller
- * v2.2.5
+ * v2.2.3
  * https://github.com/jgallen23/fidel
- * copyright Greg Allen 2014
+ * copyright Greg Allen 2013
  * MIT License
 */
 (function(w, $) {
@@ -22,7 +22,6 @@
   Fidel.prototype.__init = function(options) {
     $.extend(this, this.obj);
     this.id = _id++;
-    this.namespace = '.fidel' + this.id;
     this.obj.defaults = this.obj.defaults || {};
     $.extend(this, this.obj.defaults, options);
     $('body').trigger('FidelPreInit', this);
@@ -37,8 +36,8 @@
   Fidel.prototype.setElement = function(el) {
     this.el = el;
     this.getElements();
-    this.dataElements();
     this.delegateEvents();
+    this.dataElements();
     this.delegateActions();
   };
 
@@ -70,6 +69,7 @@
   };
 
   Fidel.prototype.delegateEvents = function() {
+    var self = this;
     if (!this.events)
       return;
     for (var key in this.events) {
@@ -80,12 +80,12 @@
       var method = this.proxy(this[methodName]);
 
       if (selector === '') {
-        this.el.on(eventName + this.namespace, method);
+        this.el.on(eventName, method);
       } else {
         if (this[selector] && typeof this[selector] != 'function') {
-          this[selector].on(eventName + this.namespace, method);
+          this[selector].on(eventName, method);
         } else {
-          this.el.on(eventName + this.namespace, selector, method);
+          this.el.on(eventName, selector, method);
         }
       }
     }
@@ -93,7 +93,7 @@
 
   Fidel.prototype.delegateActions = function() {
     var self = this;
-    self.el.on('click'+this.namespace, '[data-action]', function(e) {
+    self.el.on('click', '[data-action]', function(e) {
       var el = $(this);
       var action = el.attr('data-action');
       if (self[action]) {
@@ -103,15 +103,15 @@
   };
 
   Fidel.prototype.on = function(eventName, cb) {
-    this.el.on(eventName+this.namespace, cb);
+    this.el.on(eventName+'.fidel'+this.id, cb);
   };
 
   Fidel.prototype.one = function(eventName, cb) {
-    this.el.one(eventName+this.namespace, cb);
+    this.el.one(eventName+'.fidel'+this.id, cb);
   };
 
   Fidel.prototype.emit = function(eventName, data, namespaced) {
-    var ns = (namespaced) ? this.namespace : '';
+    var ns = (namespaced) ? '.fidel'+this.id : '';
     this.el.trigger(eventName+ns, data);
   };
 
@@ -135,7 +135,7 @@
   Fidel.prototype.destroy = function() {
     this.el.empty();
     this.emit('destroy');
-    this.el.unbind(this.namespace);
+    this.el.unbind('.fidel'+this.id);
   };
 
   Fidel.declare = function(obj) {
@@ -198,9 +198,9 @@
 
 /*!
  * popbox - Tooltip/Popover Library
- * v0.9.1
+ * v0.9.2
  * https://github.com/firstandthird/popbox
- * copyright First + Third 2013
+ * copyright First + Third 2014
  * MIT License
 */
 (function($) {
@@ -404,6 +404,15 @@
       this.hoveringOverTooltip = false;
       this.el.trigger('mouseleave.popbox');
     },
+
+    setText: function(text){
+      this.text = text;
+
+      if (this.open){
+        this.template.find('.text').text(text);
+      }
+    },
+
     destroy: function(){
       this.reset();
       this.el.unbind('.popbox');
@@ -427,8 +436,7 @@ angular.module('ftPopbox', [])
         var direction = attrs.popboxDirection || 'down';
 
         var updateElement = function(value) {
-          cls.text = value;
-          cls.template = null;
+          cls.setText(value);
         };
 
         $el.popbox({

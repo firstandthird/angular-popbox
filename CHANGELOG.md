@@ -1,4 +1,10 @@
 
+0.3.2 / 2014-01-06 
+==================
+
+  * Fixing issue with template nullifying
+  * Adding tests!
+
 0.3.1 / 2013-12-29 
 ==================
 
