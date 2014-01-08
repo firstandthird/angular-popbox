@@ -1,4 +1,10 @@
 
+0.4.0 / 2014-01-08 
+==================
+
+  * feat: added popbox-click attribute
+  * feat: updated popbox version
+
 0.3.2 / 2014-01-06 
 ==================
 

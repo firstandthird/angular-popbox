@@ -1,13 +1,13 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.3.2
+ * v0.4.0
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2014
  * MIT License
 */
 angular.module('ftPopbox', [])
-  .directive('popbox', function() {
+  .directive('popbox', function($parse) {
     return {
       restrict: 'A',
       link : function(scope, el, attrs){
@@ -27,6 +27,16 @@ angular.module('ftPopbox', [])
         attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
         });
+
+        if (attrs.popboxClick) {
+          var clickedFn = $parse(attrs.popboxClick);
+          $el.on('popboxClick', function() {
+            scope.$apply(function() {
+              clickedFn(scope, {});
+            });
+          });
+        }
+
 
         var destroyDirective = function(){
           if (cls){

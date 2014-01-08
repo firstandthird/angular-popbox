@@ -1,7 +1,7 @@
 
 /*!
  * angular-popbox - Angular directive for popbox plugin
- * v0.3.2
+ * v0.4.0
  * https://github.com/firstandthird/angular-popbox
  * copyright First + Third 2014
  * MIT License
@@ -198,7 +198,7 @@
 
 /*!
  * popbox - Tooltip/Popover Library
- * v0.9.2
+ * v0.10.0
  * https://github.com/firstandthird/popbox
  * copyright First + Third 2014
  * MIT License
@@ -265,6 +265,7 @@
 
         this.template.bind('mouseenter.popbox', this.proxy(this.hoverTooltip));
         this.template.bind('mouseleave.popbox', this.proxy(this.hoverLeaveTooltip));
+        this.template.bind('click.popbox', this.proxy(this.popboxClick));
 
         this.template.hide().fadeIn(this.showFadeDuration);
         this.position();
@@ -413,6 +414,10 @@
       }
     },
 
+    popboxClick: function(e) {
+      this.emit('popboxClick');
+    },
+
     destroy: function(){
       this.reset();
       this.el.unbind('.popbox');
@@ -427,7 +432,7 @@
 })(jQuery);
 
 angular.module('ftPopbox', [])
-  .directive('popbox', function() {
+  .directive('popbox', function($parse) {
     return {
       restrict: 'A',
       link : function(scope, el, attrs){
@@ -447,6 +452,16 @@ angular.module('ftPopbox', [])
         attrs.$observe('popbox', function(newValue) {
           updateElement(newValue);
         });
+
+        if (attrs.popboxClick) {
+          var clickedFn = $parse(attrs.popboxClick);
+          $el.on('popboxClick', function() {
+            scope.$apply(function() {
+              clickedFn(scope, {});
+            });
+          });
+        }
+
 
         var destroyDirective = function(){
           if (cls){
