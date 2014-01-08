@@ -9,4 +9,8 @@ var MainController = function($scope) {
     $scope.text1 = 'this is an updated example 1';
     $scope.text2 = 'this is an updated example 2';
   };
+
+  $scope.popboxClick = function() {
+    console.log('clicked!');
+  };
 };
