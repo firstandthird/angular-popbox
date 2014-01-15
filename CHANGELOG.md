@@ -1,4 +1,9 @@
 
+0.4.1 / 2014-01-15 
+==================
+
+  * passed in  into dep injection to support minifiers
+
 0.4.0 / 2014-01-08 
 ==================
 
